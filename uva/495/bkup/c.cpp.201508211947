@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <string>
+#include <stdlib.h>
+#include <iostream>
+
+void add_backend(const std::string& shorter, const std::string& longer, std::string& result)
+{
+	int ssize = shorter.size();
+	int lsize = longer.size();
+	int carry = 0;
+	result.clear();
+
+	for (int i = 0; i < ssize; ++i)
+	{
+		int si = shorter.at(i) - 48;
+		int li = longer.at(i) - 48;
+
+		int sum = si + li + carry;
+		printf("sum = %d\n", sum);
+
+		int ri = sum % 10;
+		printf("ri = %d\n", ri);
+		result += (ri + 48);
+		printf("r_at_i = %c\n", result.at(i));
+
+		carry = sum > 9 ? 1 : 0;
+		printf("carry = %d\n", carry);
+	}
+
+	if (carry)
+	{
+		result += '1';
+	}
+
+	for (int i = ssize; i < lsize; ++i)
+	{
+	}
+}
+
+void add(const std::string& a, const std::string& b, std::string& result)
+{
+	int asize = a.size();
+	int bsize = b.size();
+
+	if (asize < bsize)
+	{
+		add_backend(a, b, result);
+	}
+	else
+	{
+		add_backend(b, a, result);
+	}
+}
+
+int main()
+{
+	const int FMAX = 5010;
+	unsigned long long int F[FMAX];
+
+	std::string str0 = "12345678";
+	std::string str1 = "2893";
+	std::string result;
+
+	add(str0, str1, result);
+	std::cout << result << std::endl;
+
+/*
+	F[0] = 0;
+	F[1] = 1;
+
+	for (int i = 2; i < FMAX; ++i)
+	{
+		F[i] = F[i-1] + F[i-2];
+	}
+
+	int i;
+	while (scanf("%d", &i) != EOF)
+	{
+		printf("The Fibonacci number for %d is %llu\n", i, F[i]); 
+	}
+*/
+
+	return 0;
+}

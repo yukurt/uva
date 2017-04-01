@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <math.h>
+#include <vector>
+
+int main()
+{
+	std::vector<int> c_vec, row_vec, col_vec;
+
+	while (true)
+	{
+		int c;
+
+		if (scanf("%d", &c) == EOF)
+		{
+			break;
+		}
+
+		c_vec.push_back(c);
+
+		float n_f = (-1 + sqrt(1 + 4*2*c)) / 2;
+
+		int n = (int)n_f;
+		if (n_f - n)
+		{
+			++n;
+		}
+
+		int low  = (n * (n - 1)) >> 1;
+		int high = (n * (n + 1)) >> 1;
+
+		int row, col;
+		if (n & 1)
+		{
+			row = high - c + 1;
+			col = c - low;
+		}
+		else
+		{
+			row = c - low;
+			col = high - c + 1;
+		}
+
+		row_vec.push_back(row);
+		col_vec.push_back(col);
+	}
+
+	int num_cs = c_vec.size() - 1;
+
+	for (int i = 0; i < num_cs; ++i)
+	{
+		printf("TERM %d IS %d/%d\n", c_vec[i], row_vec[i], col_vec[i]);
+	}
+
+	printf("TERM %d IS %d/%d", c_vec[num_cs], row_vec[num_cs], col_vec[num_cs]);
+
+	return 0;
+}

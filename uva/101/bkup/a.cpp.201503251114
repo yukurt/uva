@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+  char line[100];
+  char *pch, *ach, *och, *bch;
+  char iflag, oflag;
+  int n, a, b;
+
+  fgets(line, 100, stdin);
+  sscanf(line, "%d", &n);
+  printf("n=%d\n", n);
+
+  while (fgets(line, 100, stdin)) {
+    pch = strtok(line, " \t\n");
+
+    iflag = pch[0];
+    if (iflag == 'q') {
+      break;
+    }
+
+    ach = strtok(NULL, " \t\n");
+    a = atoi(ach);
+
+    och = strtok(NULL, " \t\n");
+    oflag = och[1];
+
+    bch = strtok(NULL, " \t\n");
+    b = atoi(bch);
+
+    if (iflag == 'm') {
+      printf("move detected: %d %c %d\n", a, oflag, b);
+    }
+    else {
+      printf("pile detected: %d %c %d\n", a, oflag, b);
+    }
+
+  }
+
+  return 0;
+}

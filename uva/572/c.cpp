@@ -1,0 +1,196 @@
+#include <stdio.h>
+#include <set>
+#include <vector>
+
+const int MAX_LINE = 110;
+const int MULTIPLIER = 1000;
+const int CLUSTER_LIMIT = 100;
+
+bool analyze_pocket(
+	  int grid[][MAX_LINE]
+	, std::set<int>& global_backlog
+	, std::vector<int>& local_backlog
+	, std::set<int>& oil_pockets_in_cluster
+	, int cluster
+	, int x
+	, int y
+)
+{
+	if (grid[x][y] == -1)
+	{
+		//printf("found oil at x=%d y=%d\n", x, y);
+		int pocket = x * MULTIPLIER + y;
+
+		if (!oil_pockets_in_cluster.count(pocket))
+		{
+			//printf("pushing pocket=%d into local_backlog\n", pocket);
+			oil_pockets_in_cluster.insert(pocket);
+			local_backlog.push_back(pocket);
+			global_backlog.erase(pocket);
+			grid[x][y] = cluster;
+
+			if (oil_pockets_in_cluster.size() == CLUSTER_LIMIT)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+int main()
+{
+	int grid[MAX_LINE][MAX_LINE];
+	char line[MAX_LINE];
+
+	while (true)
+	{
+		int m, n;
+		scanf("%d %d", &m, &n);
+		//printf("m=%d,n=%d\n", m, n);
+
+		if (m == 0)
+		{
+			break;
+		}
+
+		for (int i = 0, j = n + 1; i <= j; ++i)
+		{
+			grid[0][i] = 0;
+		}
+		//printf("1\n");
+
+		for (int i = m + 1, j = 0, k = n + 1; j <= k; ++j)
+		{
+			grid[i][j] = 0;
+		}
+		//printf("2\n");
+
+		for (int i = 0, j = m + 1; i <= j; ++i)
+		{
+			grid[i][0] = 0;
+		}
+		//printf("3\n");
+
+		for (int i = 0, j = n + 1, k = m + 1; i <= k; ++i)
+		{
+			grid[i][j] = 0;
+		}
+		//printf("4\n");
+
+		std::set<int> global_backlog;
+
+		for (int i = 1; i <= m; ++i)
+		{
+			scanf("%s", line);
+
+			for (int j = 1, k = 0; j <= n; ++j, ++k)
+			{
+				if (line[k] == '@')
+				{
+					grid[i][j] = -1;
+					global_backlog.insert(i * MULTIPLIER + j);
+				}
+				else
+				{
+					grid[i][j] = 0;
+				}
+			}
+		}
+
+/*
+		for (int i = 0, j = m + 1; i <= j; ++i)
+		{
+			for (int k = 0, l = n + 1; k <= l; ++k)
+			{
+				printf("%3d", grid[i][k]);
+			}
+			printf("\n");
+		}
+
+		printf("global_backlog:");
+		for (const auto& i: global_backlog)
+		{
+			printf(" %d", i);
+		}
+		printf("\n");
+*/
+		int cluster = 1;	
+		for (; !global_backlog.empty(); ++cluster)
+		{
+			//printf("cluster=%d\n", cluster);
+			int oil_pocket = *global_backlog.begin();
+			//printf("global oil_pocket=%d\n", oil_pocket);
+
+			int x = oil_pocket / MULTIPLIER;
+			int y = oil_pocket % MULTIPLIER;
+			grid[x][y] = cluster;
+
+			global_backlog.erase(oil_pocket);
+
+			std::vector<int> local_backlog;
+			std::set<int> oil_pockets_in_cluster;
+
+			local_backlog.push_back(oil_pocket);
+			oil_pockets_in_cluster.insert(oil_pocket);
+
+			for (int i = 0; i < local_backlog.size(); ++i)
+			{
+				int pocket = local_backlog[i];
+				//printf("local pocket = %d\n", pocket);
+				int x = pocket / MULTIPLIER;
+				int y = pocket % MULTIPLIER;
+
+				int xs[10], ys[10];
+				xs[1] = x - 1; ys[1] = y - 1;
+				xs[2] = x - 1; ys[2] = y    ;
+				xs[3] = x - 1; ys[3] = y + 1;
+				xs[4] = x    ; ys[4] = y - 1;
+				xs[5] = x    ; ys[5] = y + 1;
+				xs[6] = x + 1; ys[6] = y - 1;
+				xs[7] = x + 1; ys[7] = y    ;
+				xs[8] = x + 1; ys[8] = y + 1;
+
+				bool cluster_limit_reached = false;
+
+				for (int j = 1; j <= 8; ++j)
+				{
+					//printf("analyzing x=%d y=%d\n", xs[j], ys[j]);
+					if (analyze_pocket(
+						  grid
+						, global_backlog
+						, local_backlog
+						, oil_pockets_in_cluster
+						, cluster
+						, xs[j]
+						, ys[j]))
+					{
+						cluster_limit_reached = true;
+						break;
+					}
+				}
+
+				if (cluster_limit_reached)
+				{
+					break;
+				}
+			}
+		}
+
+/*
+		for (int i = 0, j = m + 1; i <= j; ++i)
+		{
+			for (int k = 0, l = n + 1; k <= l; ++k)
+			{
+				printf("%3d", grid[i][k]);
+			}
+			printf("\n");
+		}
+*/
+
+		printf("%d\n", cluster - 1);
+	}
+
+	return 0;
+}

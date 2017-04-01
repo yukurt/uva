@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <deque>
+
+int main()
+{
+	const int MAX_INPUT_DIGITS = 300;
+
+	while (true)
+	{
+		char X[MAX_INPUT_DIGITS];
+		if (scanf("%s", X) != EOF)
+		{
+		}
+		else
+		{
+			break;
+		}
+
+		char Y[MAX_INPUT_DIGITS];
+		if (scanf("%s", Y) != EOF)
+		{
+		}
+		else
+		{
+			break;
+		}
+			printf("B%sE\n", X);
+			printf("C%sF\n", Y);
+	}
+
+	return 0;
+}

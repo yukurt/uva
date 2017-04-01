@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+int main() {
+  const int MAX_SIZE = 100;
+  char line[100];
+  int n, k, sum;
+
+  while (fgets(line, MAX_SIZE, stdin)) {
+    sscanf(line, "%d %d\n", &n, &k);
+
+    sum = n;
+    do {
+      n /= k;
+      sum += n;
+    } while (n);
+
+    printf("%d\n", sum);
+  }
+
+  return 0;
+}

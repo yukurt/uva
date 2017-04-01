@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+  char line[100];
+  char *pch, *ach, *och, *bch;
+  char iflag, oflag;
+  int n, a, b, i, j, len, height, hloc, vloc, x;
+  int hloca, hlocb, vloca, vlocb;
+  int arr[50][50];
+  int heights[50];
+  int hlocs[50], vlocs[50];
+
+  fgets(line, 100, stdin);
+  sscanf(line, "%d", &n);
+
+  for (i = 0; i < n; i += 1) {
+    arr[i][0] = i;
+    heights[i] = 1;
+    hlocs[i] = i;
+    vlocs[i] = 0;
+  }
+
+  while (fgets(line, 100, stdin)) {
+    pch = strtok(line, " \t\n");
+
+    iflag = pch[0];
+    if (iflag == 'q') {
+      break;
+    }
+
+    ach = strtok(NULL, " \t\n");
+    a = atoi(ach);
+
+    och = strtok(NULL, " \t\n");
+    oflag = och[1];
+
+    bch = strtok(NULL, " \t\n");
+    b = atoi(bch);
+
+    if (iflag == 'm') {
+      if (oflag == 'n') {
+        hloc = hlocs[a];
+        height = heights[hloc];
+        for (vloc = vlocs[a] + 1; vloc < height; vloc += 1) {
+          x = arr[hloc][vloc];
+          arr[x][0] = x;
+          hlocs[x] = x;
+          vlocs[x] = 0;
+          heights[x] = 1;
+        }
+        heights[hloc] = vlocs[a];
+
+        hloc = hlocs[b];
+        height = heights[hloc];
+        for (vloc = vlocs[b] + 1; vloc < height; vloc += 1) {
+          x = arr[hloc][vloc];
+          arr[x][0] = x;
+          hlocs[x] = x;
+          vlocs[x] = 0;
+          heights[x] = 1;
+        }
+        heights[hloc] = vlocs[b] + 2;
+
+        vloc = vlocs[b] + 1;
+        arr[hloc][vloc] = a;
+        hlocs[a] = hloc;
+        vlocs[a] = vloc;
+      }
+      else {
+        hloc = hlocs[a];
+        height = heights[hloc];
+        for (vloc = vlocs[a] + 1; vloc < height; vloc += 1) {
+          x = arr[hloc][vloc];
+          arr[x][0] = x;
+          hlocs[x] = x;
+          vlocs[x] = 0;
+          heights[x] = 1;
+        }
+        heights[hloc] = vlocs[a];
+
+        hloc = hlocs[b];
+        vloc = heights[hloc];
+        arr[hloc][vloc] = a;
+        hlocs[a] = hloc;
+        vlocs[a] = vloc;
+        heights[hloc] += 1;
+      }
+    }
+    else {
+      if (oflag == 'n') {
+        hloc = hlocs[b];
+        height = heights[hloc];
+        for (vloc = vlocs[b] + 1; vloc < height; vloc += 1) {
+          x = arr[hloc][vloc];
+          arr[x][0] = x;
+          hlocs[x] = x;
+          vlocs[x] = 0;
+          heights[x] = 1;
+        }
+
+        hloca = hlocs[a];
+        hlocb = hlocs[b];
+        vloca = vlocs[a];
+        vlocb = vlocs[b] + 1;
+        height = heights[hloca] - vloca;
+        for (i = 0; i < height; i += 1) {
+          x = arr[hloca][vloca+i];
+          j = vlocb + i;
+          arr[hlocb][j] = x;
+          hlocs[x] = hlocb;
+          vlocs[x] = j;
+        }
+        heights[hloca] = vloca;
+        heights[hlocb] = vlocb + height;
+      }
+      else {
+        hloca = hlocs[a];
+        hlocb = hlocs[b];
+        vloca = vlocs[a];
+        vlocb = heights[hlocb];
+        height = heights[hloca] - vloca;
+        for (i = 0; i < height; i += 1) {
+          x = arr[hloca][vloca+i];
+          j = vlocb + i;
+          arr[hlocb][j] = x;
+          hlocs[x] = hlocb;
+          vlocs[x] = j;
+        }
+        heights[hloca] = vloca;
+        heights[hlocb] = vlocb + height;
+      }
+    }
+
+    for (i = 0; i < n; i += 1) {
+      height = heights[i];
+      printf("%d:", i);
+      for (j = 0; j < height; j += 1) {
+        printf(" %d", arr[i][j]);
+      }
+      printf("\n");
+    }
+    printf("\n");
+  }
+
+  for (i = 0; i < n; i += 1) {
+    height = heights[i];
+    printf("%d:", i);
+    for (j = 0; j < height; j += 1) {
+      printf(" %d", arr[i][j]);
+    }
+    printf("\n");
+  }
+
+  return 0;
+}

@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <deque>
+
+int main() {
+	const int MAX_LINE = 1010;
+	int LLCS[MAX_LINE][MAX_LINE];
+
+	char fword[MAX_LINE];
+	char sword[MAX_LINE];
+
+	while (true)
+	{
+		if (scanf("%s", fword) == EOF)
+		{
+			break;
+		}
+		printf("1B%sE\n", fword);
+
+		if (scanf("%s", sword) == EOF)
+		{
+			break;
+		}
+		printf("2B%sE\n", sword);
+
+		std::deque<char> fword_deq;
+		for (int i = 0; true; ++i)
+		{
+			char c = fword[i];
+
+			if (!c)
+			{
+				break;
+			}
+
+			fword_deq.push_back(c);
+		}
+
+		std::deque<char> sword_deq;
+		for (int i = 0; true; ++i)
+		{
+			char c = sword[i];
+
+			if (!c)
+			{
+				break;
+			}
+
+			sword_deq.push_back(c);
+		}
+
+		int fword_size = fword_deq.size();
+		int sword_size = sword_deq.size();
+
+		for (int i = 0; i <= fword_size; ++i)
+		{
+			for (int j = 0; j <= sword_size; ++j)
+			{
+				LLCS[i][j] = 0;
+			}
+		}
+
+		fword_deq.push_front('0');
+		sword_deq.push_front('0');
+
+		for (int i = 1; i <= fword_size; ++i)
+		{
+			for (int j = 1; j <= sword_size; ++j)
+			{
+//				printf("1%c 2%c\n", fword_deq[i], sword_deq[j]);
+				if (fword_deq[i] == sword_deq[j])
+				{
+					LLCS[i][j] = LLCS[i - 1][j - 1] + 1;
+				}
+				else
+				{
+					int v = LLCS[i - 1][j];
+					int h = LLCS[i][j - 1];
+
+					LLCS[i][j] = v > h ? v : h;
+				}
+			}
+		}
+
+		printf("%d\n", LLCS[fword_size][sword_size]);
+	}
+
+	return 0;
+}

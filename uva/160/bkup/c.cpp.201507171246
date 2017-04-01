@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <set>
+#include <vector>
+
+/*
+      2      3      5      7     11     13     17     19     23     29 
+     31     37     41     43     47     53     59     61     67     71 
+     73     79     83     89     97
+*/
+
+int main()
+{
+	std::set<int> primes = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+
+	while (true)
+	{
+		int n;
+		scanf("%d", &n);
+
+		if (!n)
+		{
+			break;
+		}
+
+		std::vector<int> prime_factors;
+		while (true)
+		{
+			if (primes.find(n) != primes.end())
+			{
+				prime_factors.push_back(n);
+				break;
+			}
+
+			for (auto i: primes)
+			{
+				if (!(n % i))
+				{
+					prime_factors.push_back(i);
+					n /= i;
+					break;
+				}
+			}
+		}
+
+		for (auto i: prime_factors)
+		{
+			printf("%d ", i);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+

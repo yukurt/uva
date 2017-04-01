@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <deque>
+#include <string.h>
+
+int main() {
+	const int MAX_LINE = 1010;
+	int LLCS[MAX_LINE][MAX_LINE];
+	char line[MAX_LINE];
+	int n;
+
+	scanf("%d", &n);
+
+	std::deque<int> fword_deq;
+
+	for (int i = 0; i < n; ++i)
+	{
+		int x;
+		scanf("%d", &x);
+//		printf("%d ", x);
+		fword_deq.push_back(x);
+	}
+//	printf("\n");
+
+	int fword_size = fword_deq.size();
+	fword_deq.push_front(-1);
+
+	std::deque<int> fhist(n + 1);
+	for (int i = 1; i <= n; ++i)
+	{
+		fhist[fword_deq[i]] = i;
+	}
+
+	while (true)
+	{
+		std::deque<int> sword_deq;
+
+		for (int i = 0; i < n; ++i)
+		{
+			int x;
+
+			if (scanf("%d", &x) == EOF)
+			{
+				return 0;
+			}
+
+//			printf("%d ", x);
+			sword_deq.push_back(x);
+		}
+//		printf("\n");
+
+		sword_deq.push_front(-1);
+
+		std::deque<int> shist(n + 1);
+		for (int i = 1; i <= n; ++i)
+		{
+			shist[sword_deq[i]] = i;
+		}
+
+		for (int i = 0; i <= fword_size; ++i)
+		{
+			LLCS[i][0] = 0;
+		}
+
+		for (int j = 0; j <= fword_size; ++j)
+		{
+			LLCS[0][j] = 0;
+		}
+
+/*
+		printf("fhist: ");
+		for (int i = 1; i <= fword_size; ++i)
+		{
+			printf("%d ", fhist[i]);
+		}
+		printf("\n");
+
+		printf("shist: ");
+		for (int i = 1; i <= fword_size; ++i)
+		{
+			printf("%d ", shist[i]);
+		}
+		printf("\n");
+*/
+
+		for (int i = 1; i <= fword_size; ++i)
+		{
+			for (int j = 1; j <= fword_size; ++j)
+			{
+				if (fhist[i] == shist[j])
+				{
+//					printf("%d %d: %d, %d\n", i, j, fhist[i], shist[j]);
+					LLCS[i][j] = LLCS[i - 1][j - 1] + 1;
+				}
+				else
+				{
+					int v = LLCS[i - 1][j];
+					int h = LLCS[i][j - 1];
+
+					LLCS[i][j] = v > h ? v : h;
+				}
+			}
+		}
+
+/*
+		for (int i = 0; i <= n; ++i)
+		{
+			for (int j = 0; j <= n; ++j)
+			{
+				printf("%d ", LLCS[i][j]);
+			}
+			printf("\n");
+		}
+*/
+
+		printf("%d\n", LLCS[fword_size][fword_size]);
+	}
+
+	return 0;
+}

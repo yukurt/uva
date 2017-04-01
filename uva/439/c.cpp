@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+	static const int MAXLINE = 100;
+	char line[MAXLINE];
+	char xx[3];
+	char yy[3];
+	int map[8][8];
+
+	memset(map, -1, sizeof(map[0][0]) * 8 * 8);
+
+	map[0][0] = 0;
+
+	map[0][1] = 3;
+	map[1][1] = 2;
+
+	map[0][2] = 2;
+	map[1][2] = 1;
+	map[2][2] = 4;
+
+	map[0][3] = 3;
+	map[1][3] = 2;
+	map[2][3] = 3;
+	map[3][3] = 2;
+
+	map[0][4] = 2;
+	map[1][4] = 3;
+	map[2][4] = 2;
+	map[3][4] = 3;
+	map[4][4] = 4;
+
+	map[0][5] = 3;
+	map[1][5] = 4;
+	map[2][5] = 3;
+	map[3][5] = 4;
+	map[4][5] = 3;
+	map[5][5] = 4;
+
+	map[0][6] = 4;
+	map[1][6] = 3;
+	map[2][6] = 4;
+	map[3][6] = 3;
+	map[4][6] = 4;
+	map[5][6] = 5;
+	map[6][6] = 4;
+
+	map[0][7] = 5;
+	map[1][7] = 4;
+	map[2][7] = 5;
+	map[3][7] = 4;
+	map[4][7] = 5;
+	map[5][7] = 4;
+	map[6][7] = 5;
+	map[7][7] = 6;
+
+/*
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			printf("%2d ", map[i][j]);
+		}
+		printf("\n");
+	}
+*/
+
+	while (scanf("%s %s", xx, yy) != EOF)
+	{
+//		printf("B%s:%sE\n", xx, yy);
+
+		int xx_col = xx[0] - 'a' + 1;
+		int yy_col = yy[0] - 'a' + 1;
+
+		int dcol;
+		if (xx_col > yy_col)
+		{
+			dcol = xx_col - yy_col;
+		}
+		else
+		{
+			dcol = yy_col - xx_col;
+		}
+
+		int xx_row = xx[1] - '1' + 1;
+		int yy_row = yy[1] - '1' + 1;
+
+		int drow;
+		if (xx_row > yy_row)
+		{
+			drow = xx_row - yy_row;
+		}
+		else
+		{
+			drow = yy_row - xx_row;
+		}
+
+//		printf("dcol=%d, drow=%d\n", dcol, drow);
+
+		int small, large;
+		if (dcol > drow)
+		{
+			large = dcol;
+			small = drow;
+		}
+		else
+		{
+			large = drow;
+			small = dcol;
+		}
+
+		int moves = map[small][large];
+
+		if (dcol == 1 && drow == 1)
+		{
+			if (   (xx_col == 1 && xx_row == 1)
+			    || (yy_col == 1 && yy_row == 1)
+			    || (xx_col == 1 && xx_row == 8)
+			    || (yy_col == 1 && yy_row == 8)
+			    || (xx_col == 8 && xx_row == 1)
+			    || (yy_col == 8 && yy_row == 1)
+			    || (xx_col == 8 && xx_row == 8)
+			    || (yy_col == 8 && yy_row == 8))
+			{
+				moves = 4;
+			}
+		}
+
+		printf("To get from %s to %s takes %d knight moves.\n", xx, yy, moves);
+	}
+
+	return 0;
+}

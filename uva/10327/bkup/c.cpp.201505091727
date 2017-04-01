@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <cstring>
+#include <vector>
+
+int main() {
+	const int lsize = 10000;
+	char line[lsize];
+	char *pch;
+	int x, N, count;
+	std::vector<int> v;
+
+	bool collecting = false;
+	while (fgets(line, lsize, stdin)) {
+		pch = strtok(line, " \t\n");
+	    while (pch) {
+			x = atoi(pch);
+
+			if (!collecting) {
+				if (!x) {
+					printf("Minimum exchange operations : 0\n");
+					pch = strtok(NULL, " \t\n");
+					continue;
+				}
+
+				N = x;
+				collecting = true;
+				count = 0;
+				v.clear();
+			}
+			else {
+				v.push_back(x);
+				++count;
+
+				if (count == N) {
+					collecting = false;
+
+					for (auto i: v) {
+						printf("%d ", i);
+					}
+					printf("\n");
+
+					for (auto i = ++(v.begin()); i != v.end(); ++i) {
+						auto j = i;
+						while (j >= v.begin()) {
+							--j;
+						}
+					}
+				}
+			}
+
+			pch = strtok(NULL, " \t\n");
+		}
+	}
+
+	return 0;
+}

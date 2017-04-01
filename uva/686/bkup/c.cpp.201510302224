@@ -1,0 +1,128 @@
+#include <stdio.h>
+
+bool is_prime(int n)
+{
+	// if (n == 1) return false;
+	// if (n == 2) return true;
+	// if (n == 3) return true;
+	if (n % 2 == 0) return false;
+	if (n % 3 == 0) return false;
+	// if (n < 9) return true;
+
+	for (int i = 5; i * i <= n; ++i)
+	{
+		if (n % i == 0 || n % (i + 2) == 0)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+int main()
+{
+	const int max_primes = 50000;
+	bool computed[max_primes] = { false };
+	bool primes[max_primes] = { false };
+
+	computed[3] = true;
+	primes[3] = true;
+
+	computed[5] = true;
+	primes[5] = true;
+
+	computed[7] = true;
+	primes[7] = true;
+
+	while (true)
+	{
+		int n;
+		scanf("%d", &n);
+
+		if (!n)
+		{
+			break;
+		}
+
+		if (n == 4)
+		{
+			printf("1\n");
+			continue;
+		}
+
+		int mid = n >> 1;
+		int num_pairs = 0;
+
+		for (int i = 3; i <= mid; i += 2)
+		{
+			bool first_num_prime;
+
+			if (computed[i])
+			{
+				if (primes[i])
+				{
+					first_num_prime = true;
+				}
+				else
+				{
+					first_num_prime = false;
+				}
+			}
+			else
+			{
+				if (is_prime(i))
+				{
+					primes[i] = true;
+					first_num_prime = true;
+				}
+				else
+				{
+					first_num_prime = false;
+				}
+
+				computed[i] = true;
+			}
+
+			int second_num = n - i;
+			bool second_num_prime;
+
+			if (computed[second_num])
+			{
+				if (primes[second_num])
+				{
+					second_num_prime = true;
+				}
+				else
+				{
+					second_num_prime = false;
+				}
+			}
+			else
+			{
+				if (is_prime(second_num))
+				{
+					primes[second_num] = true;
+					second_num_prime = true;
+				}
+				else
+				{
+					second_num_prime = false;
+				}
+
+				computed[second_num] = true;
+			}
+
+//			printf("%d: %d; %d %d\n", i, first_num_prime, second_num, second_num_prime);
+
+			if (first_num_prime and second_num_prime)
+			{
+				++num_pairs;
+			}
+		}
+
+		printf("%d\n", num_pairs);
+	}
+
+	return 0;
+}

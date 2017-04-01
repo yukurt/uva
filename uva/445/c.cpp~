@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+int main()
+{
+	const int ML = 1000;
+	char line[ML];
+	char code[ML];
+
+	while (fgets(line, ML, stdin))
+	{
+		sscanf(line, "%s", code); 
+		printf("B%sE\n", code);
+	}
+
+	return 0;
+}

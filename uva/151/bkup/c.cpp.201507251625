@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <vector>
+
+int main()
+{
+	while (1)
+	{
+		int N;
+
+		scanf("%d", &N);
+
+		if (!N)
+		{
+			break;
+		}
+
+		printf("N = %d\n", N);
+		for (int m = 1; m <= (N << 1); ++m)
+		{
+			bool arr[N+1];
+			std::vector<int> vec;
+			int j = 1;
+
+			for (int i = 1; i <= N; ++i)
+			{
+				arr[i] = false;
+			}
+
+			for (int i = 1; i < N; ++i)
+			{
+				vec.push_back(j);
+				arr[j] = true;
+
+				for (int k = 1; k <= m;)
+				{
+					++j;
+
+					if (j > N)
+					{
+						j = 1;
+					}
+
+					if (!arr[j])
+					{
+						++k;
+					}
+				}
+			}
+
+			vec.push_back(j);
+
+			printf("%3d:", m);
+			for (auto i : vec)
+			{
+				printf(" %3d", i);
+			}
+			printf("\n");
+		}
+		printf("\n");
+	}
+
+	return 0;
+}

@@ -1,0 +1,123 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char disp[23][13*9];
+
+void write_0(int i, int s)
+{
+	int start = i * (s + 2 + 1);
+
+	disp[0][start] = ' ';
+
+	for (int i = 1; i <= s; ++i)
+	{
+		disp[0][start + i] = '-';
+	}
+
+	disp[0][start + s + 1] = ' ';
+
+	for (int i = 1; i <= s; ++i)
+	{
+		disp[i][start] = '|';
+
+		for (int j = 1; j <= s; ++j)
+		{
+			disp[i][start + j] = ' ';
+		}
+
+		disp[i][start + s + 1] = '|';
+	}
+
+	disp[s + 1][start] = ' ';
+
+	for (int i = 1; i <= s; ++i)
+	{
+		disp[s + 1][i] = ' ';
+	}
+
+	disp[s + 1][start + s + 1] = ' ';
+
+	for (int i = 1; i <= s; ++i)
+	{
+		disp[s + i + 1][start] = '|';
+
+		for (int j = 1; j <= s; ++j)
+		{
+			disp[s + i + 1][start + j] = ' ';
+		}
+
+		disp[s + i + 1][start + s + 1] = '|';
+	}
+
+	disp[s + s + 2][start] = ' ';
+
+	for (int i = 1; i <= s; ++i)
+	{
+		disp[s + s + 2][start + i] = '-';
+	}
+
+	disp[s + s + 2][start + s + 1] = ' ';
+}
+
+void write(int i, int s, char c)
+{
+	switch (c)
+	{
+		case '0': write_0(i, s); break;
+		default: printf("Unknown character for writing\n");
+	}
+}
+
+void print_digit(int i, int s)
+{
+	int start = i * (s + 2 + 1);
+
+	for (int i = 0; i < 2 * s + 3; ++i)
+	{
+		for (int j = 0; j < s + 2; ++j)
+		{
+			printf("%c", disp[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+int main()
+{
+	static const int MAXLINE = 100;
+	char* pch;
+	char line[MAXLINE];
+
+	while (fgets(line, MAXLINE, stdin))
+	{
+		pch = strtok(line, " \t\n");
+
+		if (!strcmp(pch, "0"))
+		{
+			break;
+		}
+
+		printf("1:%s\n", pch);
+
+		int s = atoi(pch);
+
+		pch = strtok(NULL, " \t\n");
+
+		printf("2:%s\n", pch);
+
+		int len = strlen(pch);
+
+/*
+		for (int i = 0; i < len - 1; ++i)
+		{
+			write(i, s, pch[i]);
+		}
+*/
+	}
+
+	write(0, 3, '0');
+	print_digit(0, 3);
+
+	return 0;
+}

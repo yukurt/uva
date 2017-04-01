@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <list>
+
+int main() {
+	const int MAX_SIZE = 100;
+	char line[100];
+
+	while (fgets(line, MAX_SIZE, stdin)) {
+		unsigned int N, M;
+		sscanf(line, "%d %d", &N, &M);
+		printf("N=%d,M=%d\n", N, M);
+
+		if (N == 0) {
+			break;
+		}
+
+		if (N == M) {
+			printf("%d things taken %d at a time is 1 exactly.\n", N, M);
+			continue;
+		}
+
+		unsigned int D = N - M;
+
+		unsigned int smaller, bigger;
+		if (D < M) {
+			smaller = D;
+			bigger = M;
+		}
+		else {
+			smaller = M;
+			bigger = D;
+		}
+
+		std::list<unsigned int> nl;
+		for (int i = bigger + 1; i <= N; ++i) {
+			nl.push_back(i);
+		}
+		for (auto i: nl) {
+			printf("%d ", i);
+		}
+		printf("\n");
+
+		std::list<unsigned int> dl;
+		for (int i = 2; i <= smaller; ++i) {
+			dl.push_back(i);
+		}
+		for (auto i: dl) {
+			printf("%d ", i);
+		}
+		printf("\n");
+
+		while (!dl.empty()) {
+			for (auto i = dl.begin(); i != dl.end(); ++i) {
+				for (auto j = nl.begin(); j != nl.end(); ++j) {
+					if (*j % *i == 0) {
+						*j = *j / *i;
+
+						if (*j == 1) {
+							j = nl.erase(j);
+						}
+
+						i = dl.erase(i);
+					}
+				}
+			}
+		}
+
+		printf("After processing:\n");
+		for (auto i: nl) {
+			printf("%d ", i);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}

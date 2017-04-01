@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <cmath>
+
+int main() {
+  char line[100];
+  double n, p, k;
+
+  while (fgets(line, 100, stdin)) {
+    sscanf(line, "%lf", &n);
+
+    fgets(line, 100, stdin);
+    sscanf(line, "%lf", &p);
+
+    k = pow(10, log10(p)/n);
+    printf("%d\n", int(round(k)));
+  }
+
+  return 0;
+}

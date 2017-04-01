@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+	const int MAX_SIZE = 10000;
+	char line[MAX_SIZE];
+	char num[MAX_SIZE];
+	int sum = 0;
+
+	while (fgets(line, MAX_SIZE, stdin)) {
+		sscanf(line, "%s", num);
+
+		if (strcmp(num, "0") == 0) {
+			break;
+		}
+
+		//printf("B%sE\n", num);
+
+		for (int i = 0; 1; ++i) {
+			char c = num[i];
+
+			if (!c) {
+				break;
+			}
+
+			int d = c - 48;
+			sum += d;
+		}
+	}
+
+	printf("%d\n", sum);
+
+	return 0;
+}

@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+bool is_prime(int n) {
+	// if (n == 1) return false;
+	if (n == 2) return true;
+	if (n == 3) return true;
+	if (n % 2 == 0) return false;
+	if (n % 3 == 0) return false;
+	if (n < 9) return true;
+
+	for (int i = 5; i * i <= n; ++i) {
+		if (n % i == 0 || n % (i + 2) == 0) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+int main() {
+	int n;
+
+	while (scanf("%d", &n)) {
+		if (!n) break;
+
+		int mid = n >> 1;
+		for (int a = 3; a <= mid; a += 2) {
+			int b = n - a;
+
+			if (is_prime(a) && is_prime(b)) {
+				printf("%d = %d + %d\n", n, a, b);
+				break;
+			}
+		}
+	}
+
+	return 0;
+}

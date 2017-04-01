@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int main()
+{
+	long long int A, L;
+
+	for (int i = 1; true; ++i)
+	{
+		scanf("%lld %lld", &A, &L);
+
+		if (A < 0)
+		{
+			break;
+		}
+
+		printf("Case %d: A = %lld, limit = %lld, number of terms = 8\n", i, A, L);
+	}
+
+	return 0;
+}

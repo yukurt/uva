@@ -1,0 +1,96 @@
+#include <string>
+#include <iostream>
+#include <regex>
+#include <cstdio>
+#include <vector>
+#include <utility>
+#include <algorithm>
+
+int main()
+{
+    std::string str;
+    std::regex r("(\\d+)\\s+(\\d+)");
+    while (true)
+    {
+        getline(std::cin, str);
+        std::smatch mch;
+        if (!regex_search(str, mch, r))
+        {
+            continue;
+        }
+        
+        int n = std::stoi(mch[1]);
+        int m = std::stoi(mch[2]);
+
+        if (!n)
+        {
+            break;
+        }
+
+        //printf("n=%d m=%d\n", n, m);
+
+        std::vector<std::pair<int, int>> rules;
+        
+        for (int i = 0; i < m; ++i)
+        {
+            getline(std::cin, str);
+            std::smatch mch;
+            if(!regex_search(str, mch, r))
+            {
+                break;
+            }
+            
+            int first  = std::stoi(mch[1]);
+            int second = std::stoi(mch[2]);
+
+            rules.push_back(std::make_pair(first, second));
+        }
+
+        //for (int i = 0; i < m; ++i)
+        //{
+        //    printf("%d %d\n", rules[i].first, rules[i].second);
+        //}
+
+        std::vector<int> arr;
+        std::map<int, int> locations;
+        
+        for (int i = 1; i <= n; ++i)
+        {
+            arr.push_back(i);
+            locations[i] = i - 1;
+        }
+
+        while (true)
+        {
+            int num_swaps = 0;
+
+            for (int i = 0; i < m; ++i)
+            {
+                int first  = rules[i].first;
+                int second = rules[i].second;
+
+                if (locations[first] > locations[second])
+                {
+                    std::swap(arr[locations[first]], arr[locations[second]]);
+                    std::swap(locations[first], locations[second]);
+                    ++num_swaps;
+                }
+            }
+
+            //printf("num_swaps=%d\n", num_swaps);
+            
+            if (!num_swaps)
+            {
+                break;
+            }
+        }
+
+        for (int i = 0; i < n - 1; ++i)
+        {
+            printf("%d ", arr[i]);
+        }
+        printf("%d\n", arr[n-1]);
+    }
+    
+    return 0;
+}

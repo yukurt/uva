@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+  unsigned long long int n, k;
+  double x;
+
+  while (1) {
+    scanf("%llu", &n);
+
+    if (n == 0) break;
+
+    x = sqrt(n);
+    k = int(x);
+    k = k * k;
+    if (k != n) {
+      printf("no\n");
+    }
+    else {
+      printf("yes\n");
+    }
+  }
+
+  return 0;
+}

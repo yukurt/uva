@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <cstring>
+
+int main()
+{
+	int vals[5] = {1, 5, 10, 25, 50};
+	int dp[10000];
+	memset(dp, 0, sizeof(dp));
+
+	printf("%d %d\n", dp[100], dp[7394]);
+
+/*
+	int n;
+	while (scanf("%d", &n) != EOF)
+	{
+	}
+*/
+
+	return 0;
+}

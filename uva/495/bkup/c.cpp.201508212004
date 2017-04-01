@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <string>
+#include <stdlib.h>
+#include <iostream>
+#include <algorithm>
+
+void add_backend(const std::string& shorter, const std::string& longer, std::string& result)
+{
+	int ssize = shorter.size();
+	int lsize = longer.size();
+	int carry = 0;
+	result.clear();
+
+	for (int i = 0; i < ssize; ++i)
+	{
+		printf("i = %d\n", i);
+		int si = shorter.at(i) - 48;
+		int li = longer.at(i) - 48;
+
+		int sum = si + li + carry;
+		printf("\tsum = %d\n", sum);
+
+		int ri = sum % 10;
+		printf("\tri = %d\n", ri);
+		result += (ri + 48);
+		printf("\tr_at_i = %c\n", result.at(i));
+
+		carry = sum > 9 ? 1 : 0;
+		printf("\tcarry = %d\n", carry);
+	}
+
+	for (int i = ssize; i < lsize; ++i)
+	{
+		printf("ii = %d\n", i);
+		int li = longer.at(i) - 48;
+
+		int sum = li + carry;
+		printf("\tlsum = %d\n", sum);
+
+		int ri = sum % 10;
+		printf("\tlri = %d\n", ri);
+		result += (ri + 48);
+		printf("\tlr_at_i = %c\n", result.at(i));
+
+		carry = sum > 9 ? 1 : 0;
+		printf("\tlcarry = %d\n", carry);
+	}
+
+	if (carry)
+	{
+		result += '1';
+	}
+}
+
+void add(const std::string& a, const std::string& b, std::string& result)
+{
+	int asize = a.size();
+	int bsize = b.size();
+
+	if (asize < bsize)
+	{
+		add_backend(a, b, result);
+	}
+	else
+	{
+		add_backend(b, a, result);
+	}
+}
+
+int main()
+{
+	const int FMAX = 100;
+	std::string F[FMAX];
+
+/*
+	std::string str0 = "999";
+	std::string str1 = "99999";
+	std::string result;
+
+	add(str0, str1, result);
+	std::cout << str0 << std::endl;
+	std::cout << str1 << std::endl;
+	std::cout << result << std::endl;
+*/
+
+	F[0] = "0";
+	F[1] = "1";
+
+	for (int i = 2; i < FMAX; ++i)
+	{
+		add_backend(F[i-2], F[i-1], F[i]);
+	}
+
+/*
+	for (int i = 0; i < FMAX; ++i)
+	{
+		std::reverse(F[i].begin(), F[i].end());
+		std::cout << F[i] << std::endl;
+	}
+*/
+
+	int i;
+	while (scanf("%d", &i) != EOF)
+	{
+		std::cout << "The Fibonacci number for " << i  << " is " << F[i] << std::endl; 
+	}
+
+	return 0;
+}

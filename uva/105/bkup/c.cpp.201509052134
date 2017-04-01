@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <vector>
+#include <map>
+
+int main()
+{
+	std::vector<int> L, H, R;
+	int num_bldgs;
+	std::map<int, int> v;
+
+	for (num_bldgs = 0; true; ++num_bldgs)
+	{
+		int tL, tH, tR;
+
+		if (scanf("%d", &tL) == EOF || scanf("%d", &tH) == EOF || scanf("%d", &tR) == EOF)
+		{
+			break;
+		}
+
+		L.push_back(tL);
+		H.push_back(tH);
+		R.push_back(tR);
+	}
+
+	for (int i = 0; i < num_bldgs; ++i)
+	{
+		printf("B%d %d %dE\n", L[i], H[i], R[i]);
+	}
+
+	for (int i = 0; i < num_bldgs; ++i)
+	{
+		bool found_overlap = false;
+		bool found_greater = false;
+
+		for (int j = 0; j < i; ++j)
+		{
+			if (L[j] <= L[i] && L[i] <= R[j])
+			{
+				found_overlap = true;
+
+				if (H[i] <= H[j])
+				{
+					found_greater = true;
+					break;
+				}
+			}
+		}
+
+		if (!found_greater || !found_overlap)
+		{
+			v[L[i]] = H[i];
+		}
+	}
+
+	for (const auto& i: v)
+	{
+		printf("%d %d ", i.first, i.second);
+	}
+	printf("\n");
+
+	return 0;
+}

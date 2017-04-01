@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <string>
+#include <stdlib.h>
+
+void add(const std::string& shorter, const std::string& longer, std::string& result)
+{
+	int ssize = shorter.size();
+	int lsize = longer.size();
+
+	int carry = 0;
+	char sc[2];
+	char lc[2];
+	char rc[2];
+
+	for (int i = 0; i < ssize; ++i)
+	{
+		sc[0] = shorter[i];
+		lc[0] = longer[i];
+
+		sc[1] = 0;
+		lc[1] = 0;
+
+		int si = atoi(sc);
+		int li = atoi(lc);
+
+		int sum = si + li + carry;
+
+		int ri = sum % 10;
+
+	}
+}
+
+int main()
+{
+	const int FMAX = 5010;
+	unsigned long long int F[FMAX];
+
+	std::string str0 = "12345678";
+	std::string str1 = "9876";
+
+/*
+	F[0] = 0;
+	F[1] = 1;
+
+	for (int i = 2; i < FMAX; ++i)
+	{
+		F[i] = F[i-1] + F[i-2];
+	}
+
+	int i;
+	while (scanf("%d", &i) != EOF)
+	{
+		printf("The Fibonacci number for %d is %llu\n", i, F[i]); 
+	}
+*/
+
+	return 0;
+}
