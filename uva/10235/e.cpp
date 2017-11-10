@@ -3,6 +3,7 @@
 #include <regex>
 #include <utility>
 #include <algorithm>
+#include <cmath>
 
 // Don't know why this does not compile in UVA
 int main()
@@ -29,9 +30,8 @@ int main()
 		std::string num_string = match[1];
 		int N = std::stoi(num_string);
 
-		std::string reverse_num_string = num_string;
-		std::reverse(reverse_num_string.begin(), reverse_num_string.end());
-		int NR = std::stoi(reverse_num_string);		
+		std::reverse(num_string.begin(), num_string.end());
+		int NR = std::stoi(num_string);		
 
 		if (!isComposite[N])
 		{
